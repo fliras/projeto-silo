@@ -51,6 +51,12 @@ const obtemDadosDoSiloDaPlaca = async (idPlaca) => {
     .where({ id_placa_medidora: idPlaca });
 }
 
+const registraInteracaoDaPlaca = async (idPlaca, timestamp) => {
+  await knex('placas_medidoras')
+    .update({ timestamp_ultima_interacao: timestamp })
+    .where({ id_placa_medidora: idPlaca });
+}
+
 const montaKnex = () => {
     knex = require('knex')({
     client: 'mysql',
@@ -68,20 +74,27 @@ const processaDadosIOT = async (context, dados) => {
   try {
     montaKnex();
 
+    if (dados.comando == 'PING') {
+      await registraInteracaoDaPlaca(dados.idPlaca, dados.timestamp);
+      return;
+    }
+
     const dadosDoSilo = await obtemDadosDoSiloDaPlaca(dados.idPlaca);
     if (!dadosDoSilo)
       throw new Error(`Silo de id ${dados.idPlaca} não encontrado!`);
 
-    const volumeAtualDoSilo = calculaVolumeAtual(dadosDoSilo, dados.medicao);
+    const volumeAtualDoSilo = calculaVolumeAtual(dadosDoSilo, dados.dados.medicao);
     const idNivelSilo = await defineNivelAtual(dadosDoSilo.volumeTotal, volumeAtualDoSilo);
     const medicao = montaRegistroMedicao({
       dadosDoSilo,
       volumeAtualDoSilo,
       idNivelSilo,
-      timestampDaMedicao: dados.timestampMedicao
+      timestampDaMedicao: dados.timestamp
     });
 
     await registraMedicaoNoBD(medicao);
+    await registraInteracaoDaPlaca(dados.idPlaca);
+
     context.log("Operação Completa");
     knex.destroy();
   }
