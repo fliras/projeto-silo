@@ -11,6 +11,7 @@ static LeitorTelemetria leitorTelemetria(CFG_IOTHUB_DEVICE_ID, CFG_DEVE_MOCKAR_V
 
 static unsigned long time_now = 0;
 static bool primeiraExecucao = true;
+static int contadorDeEnvio = CFG_MULTIPLO_DE_ENVIO_DE_TELEMETRIA;
 
 void setup()
 {
@@ -30,15 +31,24 @@ void loop()
     Logger.Info("Sessao do IOT Hub expirada. Reconectando...");
     gerenciadorIoTHub.configura();
   }
-  else if (primeiraExecucao || ((unsigned long)(millis() - time_now) > CFG_INTERVALO_ENVIO_TELEMETRIA_EM_MILISSEGS))
+  else if (primeiraExecucao || ((unsigned long)(millis() - time_now) > CFG_INTERVALO_ENVIO_MSG_EM_MILISSEGS))
   {
     Logger.Info("Iniciando proximo loop...");
 
-    String telemetria = leitorTelemetria.obtemLeitura();
-    Logger.Info("Telemetria coletada: " + telemetria);
-
-    if (CFG_DEVE_ENVIAR_TELEMETRIA)
+    if (CFG_DEVE_ENVIAR_MSG && contadorDeEnvio == CFG_MULTIPLO_DE_ENVIO_DE_TELEMETRIA)
+    {
+      Logger.Info("Envio de telemetria! Contador: " + String(contadorDeEnvio));
+      String telemetria = leitorTelemetria.obtemLeitura();
+      Logger.Info("Telemetria coletada: " + telemetria);
       gerenciadorIoTHub.enviaTelemetria(telemetria);
+      contadorDeEnvio = 1;
+    }
+    else if (CFG_DEVE_ENVIAR_MSG)
+    {
+      Logger.Info("Envio de ping! Contador: " + String(contadorDeEnvio));
+      gerenciadorIoTHub.enviaPing();
+      contadorDeEnvio++;
+    }
     
     time_now = millis();
     Logger.Info("Loop finalizado.");

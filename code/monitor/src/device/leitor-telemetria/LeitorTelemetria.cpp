@@ -5,8 +5,7 @@ LeitorTelemetria::LeitorTelemetria(char *IDPlaca, bool deveMockarLDR) : IDPlaca(
 String LeitorTelemetria::obtemLeitura()
 {
   float porcentagem = obtemPorcentagemDoSensor();
-  String timestamp = GerenciadorDataHora::obtemTimestampAtual();
-  return montaPayload(porcentagem, timestamp);
+  return montaPayload(porcentagem);
 }
 
 float LeitorTelemetria::obtemPorcentagemDoSensor()
@@ -20,7 +19,7 @@ int LeitorTelemetria::mockaValorDoSensor() {
   return VALOR_MIN_DO_LDR + (rand() % VALOR_MAX_DO_LDR);
 }
 
-String LeitorTelemetria::montaPayload(float medicao, String timestamp)
+String LeitorTelemetria::montaPayload(float medicao)
 {
-  return "{\"idPlaca\":\"" + String(IDPlaca) + "\", \"medicao\": " + String(medicao) + ", \"timestampMedicao\": \"" + timestamp + "\"}";
+  return "{\"medicao\": " + String(medicao) + "}";
 }

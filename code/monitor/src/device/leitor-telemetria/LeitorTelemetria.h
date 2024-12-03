@@ -1,5 +1,4 @@
 #include <Arduino.h>
-#include "src/device/gerenciador-data-hora/GerenciadorDataHora.h"
 
 #define VALOR_MIN_DO_LDR 0
 #define VALOR_MAX_DO_LDR 4095
@@ -12,7 +11,7 @@ class LeitorTelemetria
     bool deveMockarLDR;
     float obtemPorcentagemDoSensor();
     int mockaValorDoSensor();
-    String montaPayload(float medicao, String timestamp);
+    String montaPayload(float medicao);
   
   public:
     LeitorTelemetria(char* IDPlaca, bool deveMockarLDR);
