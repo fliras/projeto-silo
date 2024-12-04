@@ -1,12 +1,7 @@
 let knex;
 
 const registraMedicaoNoBD = async (medicao) => {
-  const existeDuplicata = await knex('medicoes_silos')
-    .select('id_medicao_silo')
-    .first()
-    .where({ id_silo: medicao.id_silo, timestamp_medicao: medicao.timestamp_medicao });
-  if (!existeDuplicata)
-    await knex('medicoes_silos').insert(medicao);
+  await knex('medicoes_silos').insert(medicao);
 }
 
 const montaRegistroMedicao = ({ dadosDoSilo, volumeAtualDoSilo, idNivelSilo, timestampDaMedicao }) => {
@@ -21,12 +16,12 @@ const montaRegistroMedicao = ({ dadosDoSilo, volumeAtualDoSilo, idNivelSilo, tim
 }
 
 const defineNivelAtual = async (volumeTotal, volumeAtual) => {
-  const percentualVolumeAtual = volumeAtual / volumeTotal;
+  const percentualVolumeAtual = parseFloat((volumeAtual / volumeTotal).toFixed(2));
   const nivelAtual = await knex('niveis_de_silo')
     .select('id_nivel_de_silo')
     .first()
     .where('percentual_minimo', '<=', percentualVolumeAtual)
-    .andWhere('percentual_maximo', '>', percentualVolumeAtual);
+    .andWhere('percentual_maximo', '>=', percentualVolumeAtual);
   return nivelAtual.id_nivel_de_silo;
 }
 
@@ -58,7 +53,7 @@ const registraInteracaoDaPlaca = async (idPlaca, timestamp) => {
 }
 
 const montaKnex = () => {
-    knex = require('knex')({
+  knex = require('knex')({
     client: 'mysql',
     connection:{
       host: process.env.DB_HOST,
@@ -69,11 +64,8 @@ const montaKnex = () => {
   },
 });
 }
-  
-const processaDadosIOT = async (context, dados) => {
-  try {
-    montaKnex();
 
+const processaDadosIOT = async (context, dados) => {
     if (dados.comando == 'PING') {
       await registraInteracaoDaPlaca(dados.idPlaca, dados.timestamp);
       return;
@@ -93,26 +85,32 @@ const processaDadosIOT = async (context, dados) => {
     });
 
     await registraMedicaoNoBD(medicao);
-    await registraInteracaoDaPlaca(dados.idPlaca);
+    await registraInteracaoDaPlaca(dados.idPlaca, dados.timestamp);
 
     context.log("Operação Completa");
-    knex.destroy();
-  }
-  catch (erro) {
-    context.error("Erro na operação");
-    context.error(erro);
-    knex.destroy();
-  }
 }
 
 module.exports = function (context, IoTHubMessages) {
-    context.log(`JavaScript eventhub trigger function called for message array: ${IoTHubMessages}`);
-    
-    IoTHubMessages.forEach(async message => {
-        const dados = JSON.parse(message);
-        context.log(`Received message: ${dados}`);
-        await processaDadosIOT(context, dados)
-    });
+  context.log(`JavaScript eventhub trigger function called for message array: ${IoTHubMessages}`);
 
-    context.done();
+  const promises = [];
+  montaKnex();
+
+  IoTHubMessages.forEach(message => {
+    const dados = JSON.parse(message);
+    context.log(`Received message: ${dados}`);
+    promises.push(processaDadosIOT(context, dados));
+  });
+
+  Promise.all(promises)
+  .then(() => {
+    knex.destroy();
+  })
+  .catch(erro => {
+    context.error("Erro na operação");
+    context.error(erro);
+    knex.destroy();
+  });
+
+  context.done();
 };
