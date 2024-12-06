@@ -1,4 +1,8 @@
 class OperacoesBD {
+  constructor() {
+    this.conecta();
+  }
+
   conecta() {
     this._knex = require('knex')({
       client: 'mysql',

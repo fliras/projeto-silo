@@ -1,74 +1,27 @@
 const OperacoesBD = require('./operacoesBD');
-let operacoesBD;
+const RegistroMedicao = require('./registroMedicao');
 
-const montaRegistroMedicao = ({ dadosDoSilo, volumeAtualDoSilo, idNivelSilo, timestampDaMedicao }) => {
-  const idMedicao = crypto.randomUUID();
-  return {
-    id_medicao_silo: idMedicao,
-    id_silo: dadosDoSilo.idSilo,
-    volume_em_m3: volumeAtualDoSilo,
-    id_nivel_de_silo: idNivelSilo,
-    timestamp_medicao: timestampDaMedicao
-  }
-}
+module.exports = function (context, mensagensIoTHub) {
+  context.log(`Function do IoTHub chamada para tratar ${mensagensIoTHub.length} mensagens`)
 
-const defineNivelAtual = async (volumeTotal, volumeAtual) => {
-  const percentualVolumeAtual = parseFloat((volumeAtual / volumeTotal).toFixed(2));
-  const nivelAtual = await operacoesBD.obtemNivelDeSiloPeloPercentualDeVolume(percentualVolumeAtual);
-  return nivelAtual.id_nivel_de_silo;
-}
-
-const calculaVolumeAtual = (dadosDoSilo, percentualVazioDoSilo) => {
-  const { volumeFixo, volumeVariavel } = dadosDoSilo;
-  const fatorDoVolumeVariavelAtual = (100 - percentualVazioDoSilo) / 100;
-  return volumeFixo + (volumeVariavel * fatorDoVolumeVariavelAtual);
-}
-
-const montaKnex = () => {
-  operacoesBD = new OperacoesBD();
-  operacoesBD.conecta();
-}
-
-const processaDadosIOT = async (context, dados) => {
-  if (dados.comando == 'PING') {
-    await operacoesBD.registraInteracaoDaPlaca(dados.idPlaca, dados.timestamp);
-    return;
-  }
-
-  const dadosDoSilo = await operacoesBD.obtemDadosDoSiloDaPlaca(dados.idPlaca);
-  if (!dadosDoSilo)
-    throw new Error(`Silo de id ${dados.idPlaca} não encontrado!`);
-
-  const volumeAtualDoSilo = calculaVolumeAtual(dadosDoSilo, dados.dados.medicao);
-  const idNivelSilo = await defineNivelAtual(dadosDoSilo.volumeTotal, volumeAtualDoSilo);
-  const medicao = montaRegistroMedicao({
-    dadosDoSilo,
-    volumeAtualDoSilo,
-    idNivelSilo,
-    timestampDaMedicao: dados.timestamp
-  });
-
-  await operacoesBD.registraMedicao(medicao);
-  await operacoesBD.registraInteracaoDaPlaca(dados.idPlaca, dados.timestamp);
-
-  context.log("Operação Completa");
-}
-
-module.exports = function (context, IoTHubMessages) {
-  context.log(`JavaScript eventhub trigger function called for message array: ${IoTHubMessages}`);
-
+  const operacoesBD = new OperacoesBD();
+  const registroMedicao = new RegistroMedicao(operacoesBD);
   const promises = [];
-  montaKnex();
 
-  IoTHubMessages.forEach(message => {
-    const dados = JSON.parse(message);
-    context.log(`Received message: ${dados}`);
-    promises.push(processaDadosIOT(context, dados));
+  mensagensIoTHub.forEach(stringDaMensagem => {
+    const mensagemIOT = JSON.parse(stringDaMensagem);
+    context.log(`Mensagem recebida: ${mensagemIOT}`);
+
+    if (mensagemIOT.comando == 'MEDICAO')
+      promises.push(registroMedicao.handle(mensagemIOT))
+
+    promises.push(operacoesBD.registraInteracaoDaPlaca(mensagemIOT.idPlaca, mensagemIOT.timestamp))
   });
 
   Promise.all(promises)
     .then(() => {
       operacoesBD.desconecta();
+      context.log('Operação Completa');
     })
     .catch(erro => {
       context.error("Erro na operação");
