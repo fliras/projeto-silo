@@ -1,5 +1,5 @@
-const OperacoesBD = require('./operacoesBD');
-const RegistroMedicao = require('./registroMedicao');
+const OperacoesBD = require('./servicos/operacoesBD');
+const RegistroMedicao = require('./servicos/registroMedicao');
 
 module.exports = (context, mensagensIoTHub) => {
   context.log(`Function do IoTHub chamada para tratar ${mensagensIoTHub.length} mensagens`)
@@ -20,14 +20,13 @@ module.exports = (context, mensagensIoTHub) => {
 
   Promise.all(promises)
     .then(() => {
-      operacoesBD.desconecta();
       context.log('Operação Completa');
     })
     .catch(erro => {
-      context.error("Erro na operação");
+      context.error("Erro na operação:");
       context.error(erro);
-      operacoesBD.desconecta();
     });
 
+  operacoesBD.desconecta();
   context.done();
 };
