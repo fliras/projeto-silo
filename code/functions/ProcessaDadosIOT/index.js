@@ -1,7 +1,7 @@
 const OperacoesBD = require('./operacoesBD');
 const RegistroMedicao = require('./registroMedicao');
 
-module.exports = function (context, mensagensIoTHub) {
+module.exports = (context, mensagensIoTHub) => {
   context.log(`Function do IoTHub chamada para tratar ${mensagensIoTHub.length} mensagens`)
 
   const operacoesBD = new OperacoesBD();
@@ -9,9 +9,9 @@ module.exports = function (context, mensagensIoTHub) {
   const promises = [];
 
   mensagensIoTHub.forEach(stringDaMensagem => {
-    const mensagemIOT = JSON.parse(stringDaMensagem);
-    context.log(`Mensagem recebida: ${mensagemIOT}`);
+    context.log(`Mensagem recebida: ${stringDaMensagem}`);
 
+    const mensagemIOT = JSON.parse(stringDaMensagem);
     if (mensagemIOT.comando == 'MEDICAO')
       promises.push(registroMedicao.handle(mensagemIOT))
 
