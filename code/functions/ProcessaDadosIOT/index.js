@@ -23,10 +23,10 @@ module.exports = (context, mensagensIoTHub) => {
       context.log('Operação Completa');
     })
     .catch(erro => {
-      context.error("Erro na operação:");
-      context.error(erro);
-    });
+      context.log("Erro na operação:");
+      context.log(erro);
+    })
+    .finally(() => operacoesBD.desconecta());
 
-  operacoesBD.desconecta();
   context.done();
 };
