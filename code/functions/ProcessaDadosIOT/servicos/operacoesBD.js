@@ -34,6 +34,7 @@ class OperacoesBD {
         'nome',
         'volume_fixo_em_m3 as volumeFixo',
         'volume_variavel_em_m3 as volumeVariavel',
+        'densidade_armazenada_em_t_por_m3 as densidade',
         this._knex.raw('(volume_fixo_em_m3 + volume_variavel_em_m3) as volumeTotal'),
         'id_fazenda as idFazenda',
         'id_placa_medidora as idPlacaMedidora'

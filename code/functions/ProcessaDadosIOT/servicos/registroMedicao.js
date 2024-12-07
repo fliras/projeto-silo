@@ -9,10 +9,12 @@ class RegistroMedicao {
       throw new Error(`Silo de id ${mensagemIOT.idPlaca} não encontrado!`);
 
     const volumeAtualDoSilo = this.calculaVolumeAtualDoSilo(dadosDoSilo, mensagemIOT.dados.medicao);
+    const pesoAtualDoSilo = this.calculaPesoAtualDoSilo(dadosDoSilo, volumeAtualDoSilo);
     const idNivelSilo = await this.defineNivelAtualDoSilo(dadosDoSilo.volumeTotal, volumeAtualDoSilo);
     const medicao = this.montaRegistroMedicao({
       dadosDoSilo,
       volumeAtualDoSilo,
+      pesoAtualDoSilo,
       idNivelSilo,
       timestampDaMedicao: mensagemIOT.timestamp
     })
@@ -26,18 +28,24 @@ class RegistroMedicao {
     return volumeFixo + (volumeVariavel * fatorDoVolumeVariavelAtual);
   }
 
+  calculaPesoAtualDoSilo(dadosDoSilo, volumeAtualDoSilo) {
+    const { densidade } = dadosDoSilo;
+    return densidade * volumeAtualDoSilo;
+  }
+
   async defineNivelAtualDoSilo(volumeTotal, volumeAtual) {
     const percentualVolumeAtual = parseFloat((volumeAtual / volumeTotal).toFixed(2));
     const nivelAtual = await this._bd.obtemNivelDeSiloPeloPercentualDeVolume(percentualVolumeAtual);
     return nivelAtual.id_nivel_de_silo;
   }
 
-  montaRegistroMedicao({ dadosDoSilo, volumeAtualDoSilo, idNivelSilo, timestampDaMedicao }) {
+  montaRegistroMedicao({ dadosDoSilo, volumeAtualDoSilo, pesoAtualDoSilo, idNivelSilo, timestampDaMedicao }) {
     const idMedicao = crypto.randomUUID();
     return {
       id_medicao_silo: idMedicao,
       id_silo: dadosDoSilo.idSilo,
       volume_em_m3: volumeAtualDoSilo,
+      peso_em_t: pesoAtualDoSilo,
       id_nivel_de_silo: idNivelSilo,
       timestamp_medicao: timestampDaMedicao
     }
