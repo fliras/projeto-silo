@@ -2,7 +2,7 @@ const OperacoesBD = require('./servicos/operacoesBD');
 const RegistroMedicao = require('./servicos/registroMedicao');
 
 module.exports = (context, mensagensIoTHub) => {
-  context.log(`Function do IoTHub chamada para tratar ${mensagensIoTHub.length} mensagens`)
+  context.log(`Function do IoTHub chamada para tratar ${mensagensIoTHub.length} mensagens`);
 
   const operacoesBD = new OperacoesBD();
   const registroMedicao = new RegistroMedicao(operacoesBD);
@@ -13,9 +13,9 @@ module.exports = (context, mensagensIoTHub) => {
 
     const mensagemIOT = JSON.parse(stringDaMensagem);
     if (mensagemIOT.comando == 'MEDICAO')
-      promises.push(registroMedicao.handle(mensagemIOT))
+      promises.push(registroMedicao.handle(mensagemIOT));
 
-    promises.push(operacoesBD.registraInteracaoDaPlaca(mensagemIOT.idPlaca, mensagemIOT.timestamp))
+    promises.push(operacoesBD.registraInteracaoDaPlaca(mensagemIOT.idPlaca, mensagemIOT.timestamp));
   });
 
   Promise.all(promises)
@@ -26,7 +26,8 @@ module.exports = (context, mensagensIoTHub) => {
       context.log("Erro na operação:");
       context.log(erro);
     })
-    .finally(() => operacoesBD.desconecta());
-
-  context.done();
+    .finally(() => {
+      operacoesBD.desconecta();
+      context.done();
+    });
 };
