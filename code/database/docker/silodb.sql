@@ -46,7 +46,6 @@ CREATE TABLE placas_medidoras
 (
   id_placa_medidora VARCHAR(20) NOT NULL,
   nome VARCHAR(100) NOT NULL,
-  ip VARCHAR(15) NULL,
   timestamp_ultima_interacao TIMESTAMP NULL,
   PRIMARY KEY(id_placa_medidora)
 );
@@ -76,6 +75,7 @@ CREATE TABLE silos
   nome VARCHAR(100) NOT NULL,
   volume_fixo_em_m3 DECIMAL(5,2) NOT NULL,
   volume_variavel_em_m3 DECIMAL(5,2) NOT NULL,
+  densidade_armazenada_em_t_por_m3 DECIMAL(5,2) NOT NULL,
   FOREIGN KEY(id_fazenda) REFERENCES fazendas(id_fazenda),
   FOREIGN KEY(id_placa_medidora) REFERENCES placas_medidoras(id_placa_medidora),
   PRIMARY KEY(id_silo)
@@ -96,6 +96,7 @@ CREATE TABLE medicoes_silos
   id_silo INTEGER NOT NULL,
   id_nivel_de_silo INTEGER NOT NULL,
   volume_em_m3 DECIMAL(5,2) NOT NULL,
+  peso_em_t DECIMAL(5,2) NOT NULL,
   timestamp_medicao TIMESTAMP,
   FOREIGN KEY(id_silo) REFERENCES silos(id_silo),
   FOREIGN KEY(id_nivel_de_silo) REFERENCES niveis_de_silo(id_nivel_de_silo),
