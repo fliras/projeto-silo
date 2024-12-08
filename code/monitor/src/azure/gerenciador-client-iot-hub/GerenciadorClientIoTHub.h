@@ -1,7 +1,7 @@
 #ifndef IOT_HUB_CLIENT_H
 #define IOT_HUB_CLIENT_H
 
-#include "src/device/logger-serial/LoggerSerial.h"
+#include "src/externos/esp32/logger-serial/LoggerSerial.h"
 #include <az_core.h>
 #include <az_iot.h>
 

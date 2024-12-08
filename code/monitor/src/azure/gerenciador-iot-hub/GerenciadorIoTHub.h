@@ -5,8 +5,8 @@
 #include "src/azure/gerenciador-client-iot-hub/GerenciadorClientIoTHub.h"
 #include "src/azure/client-mqtt/ClientMQTTAzure.h"
 #include "src/azure/iot-hub-token-manager/AzIoTHubTokenManager.h"
-#include "src/device/logger-serial/LoggerSerial.h"
-#include "src/device/gerenciador-data-hora/GerenciadorDataHora.h"
+#include "src/externos/esp32/logger-serial/LoggerSerial.h"
+#include "src/externos/esp32/gerenciador-data-hora/GerenciadorDataHora.h"
 
 #define DURACAO_SAS_TOKEN_EM_MINUTOS 60
 
