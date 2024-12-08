@@ -14,7 +14,7 @@ void GerenciadorIoTHub::configura()
 
   if (!sessaoEstaValidada())
   {
-    if (tokenManager->Generate(DURACAO_SAS_TOKEN_EM_MINUTOS) != 0)
+    if (tokenManager->geraToken(DURACAO_SAS_TOKEN_EM_MINUTOS) != 0)
     {
       Logger.Error("Falha ao gerar um novo token");
       return;
@@ -23,12 +23,12 @@ void GerenciadorIoTHub::configura()
 
   if (clientMQTT->verificaSeEstaConfigurado())
     clientMQTT->encerra();
-  (void)clientMQTT->configura(gerenciadorDoClient->obtemID(), gerenciadorDoClient->obtemUsername(), tokenManager->Get());
+  (void)clientMQTT->configura(gerenciadorDoClient->obtemID(), gerenciadorDoClient->obtemUsername(), tokenManager->obtemToken());
 }
 
 bool GerenciadorIoTHub::sessaoEstaValidada()
 {
-  return tokenManager->IsCreated() && !tokenManager->IsExpired();
+  return tokenManager->tokenFoiCriado() && !tokenManager->tokenExpirou();
 }
 
 void GerenciadorIoTHub::enviaTelemetria(String telemetria)

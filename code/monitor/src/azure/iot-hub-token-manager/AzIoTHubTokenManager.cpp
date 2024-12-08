@@ -237,7 +237,7 @@ AzIoTHubTokenManager::AzIoTHubTokenManager(az_iot_hub_client* client)
   this->sasToken = AZ_SPAN_EMPTY;
 }
 
-int AzIoTHubTokenManager::Generate(unsigned int expiryTimeInMinutes)
+int AzIoTHubTokenManager::geraToken(unsigned int expiryTimeInMinutes)
 {
   this->sasToken = generate_sas_token(
       this->client,
@@ -268,7 +268,7 @@ int AzIoTHubTokenManager::Generate(unsigned int expiryTimeInMinutes)
   }
 }
 
-bool AzIoTHubTokenManager::IsExpired()
+bool AzIoTHubTokenManager::tokenExpirou()
 {
   time_t now = time(NULL);
 
@@ -283,12 +283,12 @@ bool AzIoTHubTokenManager::IsExpired()
   }
 }
 
-bool AzIoTHubTokenManager::IsCreated()
+bool AzIoTHubTokenManager::tokenFoiCriado()
 {
   return !az_span_is_content_equal(this->sasToken, AZ_SPAN_EMPTY);
 }
 
-const char* AzIoTHubTokenManager::Get()
+const char* AzIoTHubTokenManager::obtemToken()
 {
   return (const char*)az_span_ptr(this->sasToken);
 }

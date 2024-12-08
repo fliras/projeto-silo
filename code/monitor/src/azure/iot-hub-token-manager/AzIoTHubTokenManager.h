@@ -13,10 +13,10 @@ class AzIoTHubTokenManager
 {
 public:
   AzIoTHubTokenManager(az_iot_hub_client* client);
-  int Generate(unsigned int expiryTimeInMinutes);
-  bool IsExpired();
-  bool IsCreated();
-  const char* Get();
+  int geraToken(unsigned int expiryTimeInMinutes);
+  bool tokenExpirou();
+  bool tokenFoiCriado();
+  const char* obtemToken();
 
 private:
   az_iot_hub_client* client;
