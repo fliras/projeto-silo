@@ -51,8 +51,16 @@ class OperacoesBD {
       .andWhere('percentual_maximo', '>=', percentual);
   }
 
-  async registraMedicao(medicao) {
-    await this._knex('medicoes_silos').insert(medicao);
+  async registraMedicao({ dadosDoSilo, volumeAtualDoSilo, pesoAtualDoSilo, idNivelSilo, timestampDaMedicao }) {
+    const idMedicao = crypto.randomUUID();
+    await this._knex('medicoes_silos').insert({
+      id_medicao_silo: idMedicao,
+      id_silo: dadosDoSilo.idSilo,
+      volume_em_m3: volumeAtualDoSilo,
+      peso_em_t: pesoAtualDoSilo,
+      id_nivel_de_silo: idNivelSilo,
+      timestamp_medicao: timestampDaMedicao
+    });
   }
 }
 

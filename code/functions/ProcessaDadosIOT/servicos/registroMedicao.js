@@ -11,15 +11,14 @@ class RegistroMedicao {
     const volumeAtualDoSilo = this.calculaVolumeAtualDoSilo(dadosDoSilo, mensagemIOT.dados.medicao);
     const pesoAtualDoSilo = this.calculaPesoAtualDoSilo(dadosDoSilo, volumeAtualDoSilo);
     const idNivelSilo = await this.defineNivelAtualDoSilo(dadosDoSilo.volumeTotal, volumeAtualDoSilo);
-    const medicao = this.montaRegistroMedicao({
+    
+    await this._bd.registraMedicao({
       dadosDoSilo,
       volumeAtualDoSilo,
       pesoAtualDoSilo,
       idNivelSilo,
       timestampDaMedicao: mensagemIOT.timestamp
     })
-
-    await this._bd.registraMedicao(medicao);
   }
 
   calculaVolumeAtualDoSilo(dadosDoSilo, percentualVazioDoSilo) {
@@ -37,18 +36,6 @@ class RegistroMedicao {
     const percentualVolumeAtual = parseFloat((volumeAtual / volumeTotal).toFixed(2));
     const nivelAtual = await this._bd.obtemNivelDeSiloPeloPercentualDeVolume(percentualVolumeAtual);
     return nivelAtual.id_nivel_de_silo;
-  }
-
-  montaRegistroMedicao({ dadosDoSilo, volumeAtualDoSilo, pesoAtualDoSilo, idNivelSilo, timestampDaMedicao }) {
-    const idMedicao = crypto.randomUUID();
-    return {
-      id_medicao_silo: idMedicao,
-      id_silo: dadosDoSilo.idSilo,
-      volume_em_m3: volumeAtualDoSilo,
-      peso_em_t: pesoAtualDoSilo,
-      id_nivel_de_silo: idNivelSilo,
-      timestamp_medicao: timestampDaMedicao
-    }
   }
 }
 
