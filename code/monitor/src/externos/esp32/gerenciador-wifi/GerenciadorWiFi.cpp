@@ -1,4 +1,4 @@
-#include "GerenciadorWiFi.h"
+#include "src/interfaces/esp32/GerenciadorWiFi.h"
 
 GerenciadorWiFi::GerenciadorWiFi(char *ssidAP, char *senhaAP) : ssidAP(ssidAP), senhaAP(senhaAP) {}
 

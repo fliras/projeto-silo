@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 #include "AzIoTHubTokenManager.h"
-#include "src/externos/esp32/logger-serial/LoggerSerial.h"
+#include "src/interfaces/esp32/LoggerSerial.h"
 #include <az_result.h>
 #include <mbedtls/base64.h>
 #include <mbedtls/md.h>

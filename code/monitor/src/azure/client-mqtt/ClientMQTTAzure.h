@@ -4,7 +4,7 @@
 #include <Arduino.h>
 #include <mqtt_client.h>
 #include <az_iot_hub_client.h>
-#include "src/externos/esp32/logger-serial/LoggerSerial.h"
+#include "src/interfaces/esp32/LoggerSerial.h"
 
 #define QTDE_BYTES_BUFFER_DE_DADOS_MQTT 128
 #define MQTT_QOS1 1

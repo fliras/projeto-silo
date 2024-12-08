@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <WiFi.h>
 #include <WiFiManager.h>
-#include "src/externos/esp32/logger-serial/LoggerSerial.h"
+#include "src/interfaces/esp32/LoggerSerial.h"
 
 class GerenciadorWiFi
 {

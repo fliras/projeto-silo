@@ -5,7 +5,7 @@
 #define SERIALLOGGER_H
 
 #include <Arduino.h>
-#include "src/externos/esp32/gerenciador-data-hora/GerenciadorDataHora.h"
+#include "src/interfaces/esp32/GerenciadorDataHora.h"
 
 #define BAUD_RATE_DO_SERIAL 115200
 

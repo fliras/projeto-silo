@@ -1,4 +1,4 @@
-#include "LeitorTelemetria.h"
+#include "src/interfaces/esp32/LeitorTelemetria.h"
 
 LeitorTelemetria::LeitorTelemetria(char *IDPlaca, bool deveMockarLDR) : IDPlaca(IDPlaca), deveMockarLDR(deveMockarLDR) {};
 

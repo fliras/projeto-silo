@@ -1,8 +1,8 @@
 #include "parametros.h"
-#include "src/externos/esp32/logger-serial/LoggerSerial.h"
-#include "src/externos/esp32/gerenciador-wifi/GerenciadorWiFi.h"
-#include "src/externos/esp32/gerenciador-data-hora/GerenciadorDataHora.h"
-#include "src/externos/esp32/leitor-telemetria/LeitorTelemetria.h"
+#include "src/interfaces/esp32/LoggerSerial.h"
+#include "src/interfaces/esp32/GerenciadorWiFi.h"
+#include "src/interfaces/esp32/GerenciadorDataHora.h"
+#include "src/interfaces/esp32/LeitorTelemetria.h"
 #include "src/azure/gerenciador-iot-hub/GerenciadorIoTHub.h"
 
 static GerenciadorWiFi gerenciadorWiFi(CFG_WIFI_SSID_AP, CFG_WIFI_SENHA_AP);
