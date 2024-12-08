@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // SPDX-License-Identifier: MIT
 
-#include "AzIoTHubTokenManager.h"
+#include "src/interfaces/azure/AzIoTHubTokenManager.h"
 #include "src/interfaces/esp32/LoggerSerial.h"
 #include <az_result.h>
 #include <mbedtls/base64.h>

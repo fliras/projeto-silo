@@ -2,9 +2,9 @@
 #define AZ_IOT_HUB_SERVICE_H
 
 #include "Arduino.h"
-#include "src/azure/gerenciador-client-iot-hub/GerenciadorClientIoTHub.h"
-#include "src/azure/client-mqtt/ClientMQTTAzure.h"
-#include "src/azure/iot-hub-token-manager/AzIoTHubTokenManager.h"
+#include "src/interfaces/azure/GerenciadorClientIoTHub.h"
+#include "src/interfaces/azure/ClientMQTTAzure.h"
+#include "src/interfaces/azure/AzIoTHubTokenManager.h"
 #include "src/interfaces/esp32/LoggerSerial.h"
 #include "src/interfaces/esp32/GerenciadorDataHora.h"
 

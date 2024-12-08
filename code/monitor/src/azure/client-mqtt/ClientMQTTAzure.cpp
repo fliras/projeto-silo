@@ -1,4 +1,4 @@
-#include "ClientMQTTAzure.h"
+#include "src/interfaces/azure/ClientMQTTAzure.h"
 #include <azure_ca.h>
 
 static esp_mqtt_client_handle_t clientMQTT;

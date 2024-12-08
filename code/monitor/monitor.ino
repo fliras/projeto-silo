@@ -3,7 +3,7 @@
 #include "src/interfaces/esp32/GerenciadorWiFi.h"
 #include "src/interfaces/esp32/GerenciadorDataHora.h"
 #include "src/interfaces/esp32/LeitorTelemetria.h"
-#include "src/azure/gerenciador-iot-hub/GerenciadorIoTHub.h"
+#include "src/interfaces/azure/GerenciadorIoTHub.h"
 
 static GerenciadorWiFi gerenciadorWiFi(CFG_WIFI_SSID_AP, CFG_WIFI_SENHA_AP);
 static GerenciadorIoTHub gerenciadorIoTHub(CFG_IOTHUB_FQDN, CFG_IOTHUB_URI_MQTT, CFG_IOTHUB_DEVICE_ID, CFG_IOTHUB_DEVICE_KEY);

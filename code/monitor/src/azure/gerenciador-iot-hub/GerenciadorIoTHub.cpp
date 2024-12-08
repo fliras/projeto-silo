@@ -1,4 +1,4 @@
-#include "GerenciadorIoTHub.h"
+#include "src/interfaces/azure/GerenciadorIoTHub.h"
 
 GerenciadorIoTHub::GerenciadorIoTHub(char *fqdn, char *uriMQTT, char *deviceID, char *deviceKey)
 {

@@ -1,4 +1,4 @@
-#include "GerenciadorClientIoTHub.h"
+#include "src/interfaces/azure/GerenciadorClientIoTHub.h"
 
 GerenciadorClientIoTHub::GerenciadorClientIoTHub(char* host, char* deviceID) {
   this->inicializado = false;
