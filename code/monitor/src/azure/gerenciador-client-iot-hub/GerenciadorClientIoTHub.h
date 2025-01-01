@@ -2,6 +2,7 @@
 #define IOT_HUB_CLIENT_H
 
 #include "src/device/logger-serial/LoggerSerial.h"
+#include "src/azure/iot-hub-token-manager/AzIoTHubTokenManager.h"
 #include <az_core.h>
 #include <az_iot.h>
 
@@ -13,13 +14,16 @@ class GerenciadorClientIoTHub
   public:
     GerenciadorClientIoTHub(char* host, char* deviceID);
     void inicializa();
-    az_iot_hub_client* obtemClient();
+    const char* obtemToken();
+    bool geraToken(unsigned int expiracaoEmMinutos);
+    bool tokenValido();
     char* obtemID();
     char* obtemUsername();
     char* obtemTopicoDaTelemetria();
     bool foiInicializado();
 
   private:
+    AzIoTHubTokenManager* tokenManager;
     az_iot_hub_client client;
     char* host;
     char* deviceID;

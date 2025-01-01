@@ -4,7 +4,6 @@
 #include "Arduino.h"
 #include "src/azure/gerenciador-client-iot-hub/GerenciadorClientIoTHub.h"
 #include "src/azure/client-mqtt/ClientMQTTAzure.h"
-#include "src/azure/iot-hub-token-manager/AzIoTHubTokenManager.h"
 #include "src/device/logger-serial/LoggerSerial.h"
 #include "src/device/gerenciador-data-hora/GerenciadorDataHora.h"
 
@@ -14,7 +13,6 @@ class GerenciadorIoTHub
 {
   private:
     GerenciadorClientIoTHub* gerenciadorDoClient;
-    AzIoTHubTokenManager* tokenManager;
     ClientMQTTAzure* clientMQTT;
     String montaMensagem(String comando, String dados);
   

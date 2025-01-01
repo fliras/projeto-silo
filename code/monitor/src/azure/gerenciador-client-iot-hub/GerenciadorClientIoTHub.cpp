@@ -1,9 +1,11 @@
 #include "GerenciadorClientIoTHub.h"
 
-GerenciadorClientIoTHub::GerenciadorClientIoTHub(char* host, char* deviceID) {
+GerenciadorClientIoTHub::GerenciadorClientIoTHub(char* host, char* deviceID)
+{
   this->inicializado = false;
   this->host = host;
   this->deviceID = deviceID;
+  this->tokenManager = nullptr;
 }
 
 void GerenciadorClientIoTHub::inicializa()
@@ -32,6 +34,8 @@ void GerenciadorClientIoTHub::inicializa()
     return;
   }
 
+  this->tokenManager = new AzIoTHubTokenManager(&client);
+
   Logger.Info("Client IOT Hub inicializado!");
   Logger.Info("ID: " + String(obtemID()));
   Logger.Info("Username: " + String(obtemUsername()));
@@ -44,7 +48,7 @@ bool GerenciadorClientIoTHub::carregaClient()
   az_iot_hub_client_options parametrosDoClient = az_iot_hub_client_options_default();
   parametrosDoClient.user_agent = AZ_SPAN_FROM_STR(AZURE_SDK_CLIENT_USER_AGENT);
   az_result resultado = az_iot_hub_client_init(
-    this->obtemClient(),
+    &client,
     az_span_create((uint8_t *)host, strlen(host)),
     az_span_create((uint8_t *)deviceID, strlen(deviceID)),
     &parametrosDoClient);
@@ -55,7 +59,7 @@ bool GerenciadorClientIoTHub::carregaIdDoClient()
 {
   size_t tamanhoIdDoClient;
   az_result resultado = az_iot_hub_client_get_client_id(
-    this->obtemClient(),
+    &client,
     id,
     sizeof(id) - 1,
     &tamanhoIdDoClient);
@@ -65,7 +69,7 @@ bool GerenciadorClientIoTHub::carregaIdDoClient()
 bool GerenciadorClientIoTHub::carregaUsername()
 {
   az_result resultado = az_iot_hub_client_get_user_name(
-    this->obtemClient(),
+    &client,
     username,
     obtemTamanhoDeArray(username),
     NULL);
@@ -75,7 +79,7 @@ bool GerenciadorClientIoTHub::carregaUsername()
 bool GerenciadorClientIoTHub::carregaTopicoDaTelemetria()
 {
   az_result resultado = az_iot_hub_client_telemetry_get_publish_topic(
-    this->obtemClient(),
+    &client,
     NULL,
     topicoDaTelemetria,
     sizeof(topicoDaTelemetria),
@@ -83,9 +87,19 @@ bool GerenciadorClientIoTHub::carregaTopicoDaTelemetria()
   return !az_result_failed(resultado);
 }
 
-az_iot_hub_client* GerenciadorClientIoTHub::obtemClient()
+const char* GerenciadorClientIoTHub::obtemToken()
 {
-  return &client;
+  return this->tokenManager->obtemToken();
+}
+
+bool GerenciadorClientIoTHub::geraToken(unsigned int expiracaoEmMinutos)
+{
+  return tokenManager->geraToken(expiracaoEmMinutos) == 0;
+}
+
+bool GerenciadorClientIoTHub::tokenValido()
+{
+  return tokenManager->tokenFoiCriado() && !tokenManager->tokenExpirou();
 }
 
 char* GerenciadorClientIoTHub::obtemID()

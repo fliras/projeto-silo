@@ -3,7 +3,6 @@
 GerenciadorIoTHub::GerenciadorIoTHub(char *fqdn, char *uriMQTT, char *deviceID, char *deviceKey)
 {
   this->gerenciadorDoClient = new GerenciadorClientIoTHub(fqdn, deviceID);
-  this->tokenManager = new AzIoTHubTokenManager(gerenciadorDoClient->obtemClient());
   this->clientMQTT = new ClientMQTTAzure(uriMQTT);
 }
 
@@ -14,7 +13,7 @@ void GerenciadorIoTHub::configura()
 
   if (!sessaoEstaValidada())
   {
-    if (tokenManager->geraToken(DURACAO_SAS_TOKEN_EM_MINUTOS) != 0)
+    if (!gerenciadorDoClient->geraToken(DURACAO_SAS_TOKEN_EM_MINUTOS))
     {
       Logger.Error("Falha ao gerar um novo token");
       return;
@@ -23,12 +22,12 @@ void GerenciadorIoTHub::configura()
 
   if (clientMQTT->verificaSeEstaConfigurado())
     clientMQTT->encerra();
-  (void)clientMQTT->configura(gerenciadorDoClient->obtemID(), gerenciadorDoClient->obtemUsername(), tokenManager->obtemToken());
+  (void)clientMQTT->configura(gerenciadorDoClient->obtemID(), gerenciadorDoClient->obtemUsername(), gerenciadorDoClient->obtemToken());
 }
 
 bool GerenciadorIoTHub::sessaoEstaValidada()
 {
-  return tokenManager->tokenFoiCriado() && !tokenManager->tokenExpirou();
+  return gerenciadorDoClient->tokenValido();
 }
 
 void GerenciadorIoTHub::enviaTelemetria(String telemetria)
