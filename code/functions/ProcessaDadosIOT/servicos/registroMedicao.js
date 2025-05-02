@@ -4,38 +4,38 @@ class RegistroMedicao {
   }
 
   async handle(mensagemIOT) {
-    const dadosDoSilo = await this._bd.obtemDadosDoSiloDaPlaca(mensagemIOT.idPlaca);
-    if (!dadosDoSilo)
-      throw new Error(`Silo de id ${mensagemIOT.idPlaca} não encontrado!`);
+    const idSilo = await this._bd.obtemIdDoSiloDaPlaca(mensagemIOT.idPlaca);
+    if (!idSilo)
+      throw this.montaErroPlacaNaoEncontrada(mensagemIOT.idPlaca);
 
-    const volumeAtualDoSilo = this.calculaVolumeAtualDoSilo(dadosDoSilo, mensagemIOT.dados.medicao);
-    const pesoAtualDoSilo = this.calculaPesoAtualDoSilo(dadosDoSilo, volumeAtualDoSilo);
-    const idNivelSilo = await this.defineNivelAtualDoSilo(dadosDoSilo.volumeTotal, volumeAtualDoSilo);
-    
+    const miliAmperesDaMedicao = this.calculaMiliAmperesDaMedicao(mensagemIOT.dados.medicao);
+    const idNivelSilo = await this._bd.obtemIdDoNivelDeSiloPelosMiliamperes(miliAmperesDaMedicao);
+
+    if (!idNivelSilo)
+      throw this.montaErroNivelDeSiloNaoEncontrado(mensagemIOT.dado.medicao, miliAmperesDaMedicao);
+
+    console.log(`mA: ${miliAmperesDaMedicao}\nid do Nivel: ${idNivelSilo}\n\n`);
     await this._bd.registraMedicao({
-      dadosDoSilo,
-      volumeAtualDoSilo,
-      pesoAtualDoSilo,
+      idSilo,
       idNivelSilo,
       timestampDaMedicao: mensagemIOT.timestamp
     })
   }
 
-  calculaVolumeAtualDoSilo(dadosDoSilo, percentualVazioDoSilo) {
-    const { volumeFixo, volumeVariavel } = dadosDoSilo;
-    const fatorDoVolumeVariavelAtual = (100 - percentualVazioDoSilo) / 100;
-    return volumeFixo + (volumeVariavel * fatorDoVolumeVariavelAtual);
+  montaErroPlacaNaoEncontrada(idPlaca) {
+    return new Error(`Placa de id ${idPlaca} não encontrada!`);
   }
 
-  calculaPesoAtualDoSilo(dadosDoSilo, volumeAtualDoSilo) {
-    const { densidade } = dadosDoSilo;
-    return densidade * volumeAtualDoSilo;
+    // método mockado, substituir aqui pela função correta
+  // retorna um valor aleatório entre 4mA e 20mA
+  calculaMiliAmperesDaMedicao(medicao) {
+    return 4 + (Math.random() * 16)
   }
 
-  async defineNivelAtualDoSilo(volumeTotal, volumeAtual) {
-    const percentualVolumeAtual = parseFloat((volumeAtual / volumeTotal).toFixed(2));
-    const nivelAtual = await this._bd.obtemNivelDeSiloPeloPercentualDeVolume(percentualVolumeAtual);
-    return nivelAtual.id_nivel_de_silo;
+  montaErroNivelDeSiloNaoEncontrado(medicao, miliamperes) {
+    return new Error('Não foi possível classificar o nível de silo atual!\n'
+      + `valor do sensor: ${medicao}\n`
+      + `miliamperes: ${miliamperes}`);
   }
 }
 

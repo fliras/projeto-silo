@@ -27,37 +27,28 @@ class OperacoesBD {
       .where({ id_placa_medidora: idPlaca });
   }
 
-  async obtemDadosDoSiloDaPlaca(idPlaca) {
-    return await this._knex('silos')
-      .select(
-        'id_silo as idSilo',
-        'nome',
-        'volume_fixo_em_m3 as volumeFixo',
-        'volume_variavel_em_m3 as volumeVariavel',
-        'densidade_armazenada_em_t_por_m3 as densidade',
-        this._knex.raw('(volume_fixo_em_m3 + volume_variavel_em_m3) as volumeTotal'),
-        'id_fazenda as idFazenda',
-        'id_placa_medidora as idPlacaMedidora'
-      )
+  async obtemIdDoSiloDaPlaca(idPlaca) {
+    const silo = await this._knex('silos')
+      .select('id_silo')
       .first()
       .where({ id_placa_medidora: idPlaca });
+    return silo?.id_silo;
   }
 
-  async obtemNivelDeSiloPeloPercentualDeVolume(percentual) {
-    return await this._knex('niveis_de_silo')
+  async obtemIdDoNivelDeSiloPelosMiliamperes(miliamperes) {
+    const faixaMiliampere = await this._knex('faixas_miliampere')
       .select('id_nivel_de_silo')
       .first()
-      .where('percentual_minimo', '<=', percentual)
-      .andWhere('percentual_maximo', '>=', percentual);
+      .where('ma_minimo', '<=', miliamperes)
+      .andWhere('ma_maximo', '>=', miliamperes);
+    return faixaMiliampere?.id_nivel_de_silo;
   }
 
-  async registraMedicao({ dadosDoSilo, volumeAtualDoSilo, pesoAtualDoSilo, idNivelSilo, timestampDaMedicao }) {
+  async registraMedicao({ idSilo, idNivelSilo, timestampDaMedicao }) {
     const idMedicao = crypto.randomUUID();
     await this._knex('medicoes_silos').insert({
       id_medicao_silo: idMedicao,
-      id_silo: dadosDoSilo.idSilo,
-      volume_em_m3: volumeAtualDoSilo,
-      peso_em_t: pesoAtualDoSilo,
+      id_silo: idSilo,
       id_nivel_de_silo: idNivelSilo,
       timestamp_medicao: timestampDaMedicao
     });
