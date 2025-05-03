@@ -4,7 +4,8 @@ GerenciadorDataHora::GerenciadorDataHora() {}
 
 void GerenciadorDataHora::defineTimeZone()
 {
-  configTime(GMT_OFFSET_SECS, GMT_OFFSET_SECS_DST, SERVIDORES_NTP);
+  // o zero representa ausência de horário de verão
+  configTime(GMT_OFFSET_SECS, 0, SERVIDORES_NTP);
   time_t timestampAtual = time(NULL);
   while (timestampAtual < DIA_13_NOV_2017_EM_UNIX_TIME)
   {

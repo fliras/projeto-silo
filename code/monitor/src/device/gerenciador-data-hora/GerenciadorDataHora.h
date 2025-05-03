@@ -11,10 +11,7 @@
 #define SERVIDORES_NTP "pool.ntp.org", "time.nist.gov"
 
 #define TIME_ZONE_GMT -3
-#define TIME_ZONE_GMT_DAYLIGHT_SAVINGS_DIFF 1
-
 #define GMT_OFFSET_SECS (TIME_ZONE_GMT * 3600)
-#define GMT_OFFSET_SECS_DST (TIME_ZONE_GMT_DAYLIGHT_SAVINGS_DIFF * 3600)
 
 class GerenciadorDataHora
 {
