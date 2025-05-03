@@ -1,6 +1,7 @@
 class RegistroMedicao {
-  constructor(operacoesBD) {
+  constructor(operacoesBD, context) {
     this._bd = operacoesBD;
+    this._context = context;
   }
 
   async handle(mensagemIOT) {
@@ -14,7 +15,8 @@ class RegistroMedicao {
     if (!idNivelSilo)
       throw this.montaErroNivelDeSiloNaoEncontrado(mensagemIOT.dado.medicao, miliAmperesDaMedicao);
 
-    console.log(`mA: ${miliAmperesDaMedicao}\nid do Nivel: ${idNivelSilo}\n\n`);
+    this._context.log(`mA: ${miliAmperesDaMedicao}`);
+    this._context.log(`id do Nivel: ${idNivelSilo}`);
     await this._bd.registraMedicao({
       idSilo,
       idNivelSilo,

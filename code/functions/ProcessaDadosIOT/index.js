@@ -5,7 +5,7 @@ module.exports = (context, mensagensIoTHub) => {
   context.log(`Function do IoTHub chamada para tratar ${mensagensIoTHub.length} mensagens`);
 
   const operacoesBD = new OperacoesBD();
-  const registroMedicao = new RegistroMedicao(operacoesBD);
+  const registroMedicao = new RegistroMedicao(operacoesBD, context);
   const promises = [];
 
   mensagensIoTHub.forEach(stringDaMensagem => {
