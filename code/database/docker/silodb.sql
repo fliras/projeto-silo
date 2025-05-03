@@ -197,7 +197,7 @@ ENGINE = InnoDB;
 -- Table `silodb`.`faixas_miliampere`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `silodb`.`faixas_miliampere` (
-  `id_faixa_miliampere` INT NOT NULL,
+  `id_faixa_miliampere` INT NOT NULL AUTO_INCREMENT,
   `ma_minimo` DECIMAL(5,2) NOT NULL,
   `ma_maximo` DECIMAL(5,2) NOT NULL,
   `id_nivel_de_silo` INT NOT NULL,
