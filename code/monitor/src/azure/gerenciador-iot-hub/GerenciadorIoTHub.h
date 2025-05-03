@@ -14,13 +14,13 @@ class GerenciadorIoTHub
   private:
     GerenciadorClientIoTHub* gerenciadorDoClient;
     ClientMQTTAzure* clientMQTT;
-    String montaMensagem(String comando, String dados);
+    String montaMensagem(String comando, String payload);
   
   public:
     GerenciadorIoTHub(char* fqdn, char* uriMQTT, char* deviceID, char* deviceKey);
     void configura();
     bool sessaoEstaValidada();
-    void enviaTelemetria(String telemetria);
+    void enviaTelemetria(int valorTelemetria);
     void enviaPing();
 };
 

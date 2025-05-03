@@ -59,9 +59,9 @@ void loop()
 void trataEnvioDeTelemetria()
 {
   Logger.Info("Envio de telemetria! Contador: " + String(contadorDeEnvio));
-  String telemetria = leitorTelemetria.obtemLeitura();
-  Logger.Info("Telemetria coletada: " + telemetria);
-  gerenciadorIoTHub.enviaTelemetria(telemetria);
+  int valorTelemetria = leitorTelemetria.obtemLeitura();
+  Logger.Info("Valor lido do sensor: " + String(valorTelemetria));
+  gerenciadorIoTHub.enviaTelemetria(valorTelemetria);
   contadorDeEnvio = 1;
 }
 

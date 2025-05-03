@@ -30,9 +30,10 @@ bool GerenciadorIoTHub::sessaoEstaValidada()
   return gerenciadorDoClient->tokenValido();
 }
 
-void GerenciadorIoTHub::enviaTelemetria(String telemetria)
+void GerenciadorIoTHub::enviaTelemetria(int valorTelemetria)
 {
-  String mensagem = montaMensagem("MEDICAO", telemetria);
+  String payloadTelemetria = "{\"medicao\": " + String(valorTelemetria) + "}";
+  String mensagem = montaMensagem("MEDICAO", payloadTelemetria);
   clientMQTT->publica(gerenciadorDoClient->obtemTopicoDaTelemetria(), mensagem);
 }
 
@@ -42,8 +43,8 @@ void GerenciadorIoTHub::enviaPing()
   clientMQTT->publica(gerenciadorDoClient->obtemTopicoDaTelemetria(), mensagem);
 }
 
-String GerenciadorIoTHub::montaMensagem(String comando, String dados)
+String GerenciadorIoTHub::montaMensagem(String comando, String payload)
 {
   // {"idPlaca": "", "comando": "", "timestamp": "", dados: {}}
-  return "{\"idPlaca\":\""+ String(gerenciadorDoClient->obtemID()) + "\",\"comando\":\"" + comando + "\",\"timestamp\":\"" + GerenciadorDataHora::obtemTimestampAtual() + "\",\"dados\":" + dados + "}";
+  return "{\"idPlaca\":\""+ String(gerenciadorDoClient->obtemID()) + "\",\"comando\":\"" + comando + "\",\"timestamp\":\"" + GerenciadorDataHora::obtemTimestampAtual() + "\",\"dados\":" + payload + "}";
 }
