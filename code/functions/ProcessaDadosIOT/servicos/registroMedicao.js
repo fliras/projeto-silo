@@ -26,10 +26,13 @@ class RegistroMedicao {
     return new Error(`Placa de id ${idPlaca} não encontrada!`);
   }
 
-    // método mockado, substituir aqui pela função correta
-  // retorna um valor aleatório entre 4mA e 20mA
+  // Método que calcula o valor em mA com base na leitura do sensor em uma função de grau 2.
+  // Os coeficientes foram obtidos por meio de testes
   calculaMiliAmperesDaMedicao(medicao) {
-    return 4 + (Math.random() * 16)
+    const coeficienteA = -2.91501563 * Math.pow(10, -6);
+    const coeficienteB = 1.44238234 * Math.pow(10, -2);
+    const coeficienteC = 1.24496813;
+    return (coeficienteA * Math.pow(medicao, 2)) + (coeficienteB * medicao) + coeficienteC;
   }
 
   montaErroNivelDeSiloNaoEncontrado(medicao, miliamperes) {
