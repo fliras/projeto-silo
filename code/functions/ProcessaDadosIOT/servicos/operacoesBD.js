@@ -53,6 +53,15 @@ class OperacoesBD {
       timestamp_medicao: timestampDaMedicao
     });
   }
+
+  async obtemLimitesDeMiliampere() {
+    return await this._knex('faixas_miliampere')
+      .select(
+        { maMinimo: this._knex.min('ma_minimo') },
+        { maMaximo: this._knex.max('ma_maximo') }
+      )
+      .first();
+  }
 }
 
 module.exports = OperacoesBD;
