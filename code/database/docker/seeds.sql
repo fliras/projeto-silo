@@ -13,13 +13,13 @@ insert into silos values
     (default, 'silo03', 55, 1.24, 1, 'esp32-etasa-0003');
     
 insert into niveis_de_silo values
-    (default, 'N3', 0.75, 1),
-    (default, 'N2', 0.5, 0.74),
+    (default, 'N0', 0, 0.24),
     (default, 'N1', 0.25, 0.49),
-    (default, 'N0', 0, 0.24);
+    (default, 'N2', 0.5, 0.74),
+    (default, 'N3', 0.75, 1);
     
 insert into faixas_miliampere values
-    (default, 4, 8, 1),
-    (default, 8.1, 12, 2),
-    (default, 12.1, 16, 3),
-    (default, 16.1, 20, 4);
+    (default, 16.1, 20, 1),
+    (default, 12.1, 16, 2),
+    (default, 8.1, 12, 3),
+    (default, 4, 8, 4);
