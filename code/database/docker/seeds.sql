@@ -34,39 +34,54 @@ VALUES
   ('Ração de Pasto'),
   ('Ração Leiteiras 2');
 
-INSERT INTO ingredientes (nome, fator_de_proporcao, id_receita)
+INSERT INTO ingredientes (nome)
 VALUES
-  ('Milho', 0.8500, 1),
-  ('Farelo de soja', 0.0928, 1),
-  ('Ureia pecuária', 0.0172, 1),
-  ('Núcleo mineral engorda', 0.0400, 1),
+  ('Milho'),
+  ('Farelo de soja'),
+  ('Ureia pecuária'),
+  ('Núcleo mineral engorda'),
+  ('Farelo de soja (saco 40kg)'),
+  ('Núcleo mineral engorda (saco 30kg)'),
+  ('Núcleo mineral pra bezerros (saco 30kg)'),
+  ('Calcário fino'),
+  ('Calcário grosso'),
+  ('Núcleo mineral de postura'),
+  ('Núcleo postura'),
+  ('Núcleo mineral de leite');
 
-  ('Milho', 0.5573, 2),
-  ('Farelo de soja (saco 40kg)', 0.4327, 2),
-  ('Núcleo mineral engorda (saco 30kg)', 0.0100, 2),
+INSERT INTO ingredientes_receitas (id_ingrediente, fator_de_proporcao, id_receita)
+VALUES
+  (1, 0.8500, 1),
+  (2, 0.0928, 1),
+  (3, 0.0172, 1),
+  (4, 0.0400, 1),
 
-  ('Milho', 0.5540, 3),
-  ('Farelo de soja (saco 40kg)', 0.3960, 3),
-  ('Núcleo mineral pra bezerros (saco 30kg)', 0.0500, 3),
+  (1, 0.5573, 2),
+  (5, 0.4327, 2),
+  (6, 0.0100, 2),
 
-  ('Milho', 0.6300, 4),
-  ('Farelo de soja', 0.2240, 4),
-  ('Calcário fino', 0.0300, 4),
-  ('Calcário grosso', 0.0910, 4),
-  ('Núcleo mineral de postura', 0.0250, 4),
+  (1, 0.5540, 3),
+  (5, 0.3960, 3),
+  (7, 0.0500, 3),
 
-  ('Milho', 0.6580, 5),
-  ('Farelo de soja', 0.2080, 5),
-  ('Calcário fino', 0.0340, 5),
-  ('Calcário grosso', 0.0750, 5),
-  ('Núcleo postura', 0.0250, 5),
+  (1, 0.6300, 4),
+  (2, 0.2240, 4),
+  (8, 0.0300, 4),
+  (9, 0.0910, 4),
+  (10, 0.0250, 4),
 
-  ('Milho', 0.7400, 6),
-  ('Farelo de soja', 0.1700, 6),
-  ('Ureia pecuária', 0.0200, 6),
-  ('Núcleo mineral engorda', 0.0700, 6),
+  (1, 0.6580, 5),
+  (2, 0.2080, 5),
+  (8, 0.0340, 5),
+  (9, 0.0750, 5),
+  (11, 0.0250, 5),
 
-  ('Milho', 0.6100, 7),
-  ('Farelo de soja', 0.3500, 7),
-  ('Ureia pecuária', 0.0100, 7),
-  ('Núcleo mineral de leite', 0.0300, 7);
+  (1, 0.7400, 6),
+  (2, 0.1700, 6),
+  (3, 0.0200, 6),
+  (4, 0.0700, 6),
+
+  (1, 0.6100, 7),
+  (2, 0.3500, 7),
+  (3, 0.0100, 7),
+  (12, 0.0300, 7);
