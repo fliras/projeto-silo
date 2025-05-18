@@ -23,3 +23,50 @@ insert into faixas_miliampere values
     (default, 12.1, 16, 2),
     (default, 8.1, 12, 3),
     (default, 4, 8, 4);
+
+INSERT INTO receitas (nome)
+VALUES 
+  ('Ração de Confinamento'),
+  ('Ração de Leiteiras'),
+  ('Ração de Bezerros'),
+  ('Ração de Postura'),
+  ('Ração de Postura - P3 (75 semanas)'),
+  ('Ração de Pasto'),
+  ('Ração Leiteiras 2');
+
+INSERT INTO ingredientes (nome, fator_de_proporcao, id_receita)
+VALUES
+  ('Milho', 0.8500, 1),
+  ('Farelo de soja', 0.0928, 1),
+  ('Ureia pecuária', 0.0172, 1),
+  ('Núcleo mineral engorda', 0.0400, 1),
+
+  ('Milho', 0.5573, 2),
+  ('Farelo de soja (saco 40kg)', 0.4327, 2),
+  ('Núcleo mineral engorda (saco 30kg)', 0.0100, 2),
+
+  ('Milho', 0.5540, 3),
+  ('Farelo de soja (saco 40kg)', 0.3960, 3),
+  ('Núcleo mineral pra bezerros (saco 30kg)', 0.0500, 3),
+
+  ('Milho', 0.6300, 4),
+  ('Farelo de soja', 0.2240, 4),
+  ('Calcário fino', 0.0300, 4),
+  ('Calcário grosso', 0.0910, 4),
+  ('Núcleo mineral de postura', 0.0250, 4),
+
+  ('Milho', 0.6580, 5),
+  ('Farelo de soja', 0.2080, 5),
+  ('Calcário fino', 0.0340, 5),
+  ('Calcário grosso', 0.0750, 5),
+  ('Núcleo postura', 0.0250, 5),
+
+  ('Milho', 0.7400, 6),
+  ('Farelo de soja', 0.1700, 6),
+  ('Ureia pecuária', 0.0200, 6),
+  ('Núcleo mineral engorda', 0.0700, 6),
+
+  ('Milho', 0.6100, 7),
+  ('Farelo de soja', 0.3500, 7),
+  ('Ureia pecuária', 0.0100, 7),
+  ('Núcleo mineral de leite', 0.0300, 7);
