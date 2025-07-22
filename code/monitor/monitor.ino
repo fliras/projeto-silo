@@ -13,10 +13,6 @@ static unsigned long ultimaContagemDeMilissegundos = 0;
 static bool primeiraExecucao = true;
 static int contadorDeEnvio = CFG_MULTIPLO_DE_ENVIO_DE_TELEMETRIA;
 
-void trataEnvioDeTelemetria();
-void trataEnvioDePing();
-void preparaProximoCicloDeEnvio();
-
 void setup()
 {
   gerenciadorWiFi.conecta();
@@ -40,11 +36,13 @@ void loop()
   if (primeiraExecucao || iniciouCicloDeEnvio)
   {
     Logger.Info("Iniciando ciclo de envio...");
+    int valorTelemetria = leitorTelemetria.obtemLeitura();
+    Logger.Info("Valor lido do sensor: " + String(valorTelemetria));
 
     bool deveEnviarTelemetria = CFG_DEVE_ENVIAR_MSG && contadorDeEnvio == CFG_MULTIPLO_DE_ENVIO_DE_TELEMETRIA;
     if (deveEnviarTelemetria)
     {
-      trataEnvioDeTelemetria();
+      trataEnvioDeTelemetria(valorTelemetria);
     }
     else if (CFG_DEVE_ENVIAR_MSG)
     {
@@ -56,11 +54,9 @@ void loop()
   }
 }
 
-void trataEnvioDeTelemetria()
+void trataEnvioDeTelemetria(int valorTelemetria)
 {
   Logger.Info("Envio de telemetria! Contador: " + String(contadorDeEnvio));
-  int valorTelemetria = leitorTelemetria.obtemLeitura();
-  Logger.Info("Valor lido do sensor: " + String(valorTelemetria));
   gerenciadorIoTHub.enviaTelemetria(valorTelemetria);
   contadorDeEnvio = 1;
 }
