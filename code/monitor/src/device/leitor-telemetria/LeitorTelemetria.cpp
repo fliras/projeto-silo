@@ -1,6 +1,6 @@
 #include "LeitorTelemetria.h"
 
-LeitorTelemetria::LeitorTelemetria(char *IDPlaca, bool deveMockarSensor) : IDPlaca(IDPlaca), deveMockarSensor(deveMockarSensor) {};
+LeitorTelemetria::LeitorTelemetria(bool deveMockarSensor) : deveMockarSensor(deveMockarSensor) {};
 
 int LeitorTelemetria::obtemLeitura()
 {

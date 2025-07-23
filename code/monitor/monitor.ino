@@ -15,7 +15,7 @@
 // instanciação dos componentes utilizados para gerenciar Wi-Fi, conexão com o Azure IoT Hub e coleta de telemetrias (medições).
 static GerenciadorWiFi gerenciadorWiFi(CFG_WIFI_SSID_AP, CFG_WIFI_SENHA_AP);
 static GerenciadorIoTHub gerenciadorIoTHub(CFG_IOTHUB_FQDN, CFG_IOTHUB_URI_MQTT, CFG_IOTHUB_DEVICE_ID, CFG_IOTHUB_DEVICE_KEY);
-static LeitorTelemetria leitorTelemetria(CFG_IOTHUB_DEVICE_ID, CFG_DEVE_MOCKAR_VALOR_DO_SENSOR);
+static LeitorTelemetria leitorTelemetria(CFG_DEVE_MOCKAR_VALOR_DO_SENSOR);
 
 
 // variáveis de controle do fluxo de execução.

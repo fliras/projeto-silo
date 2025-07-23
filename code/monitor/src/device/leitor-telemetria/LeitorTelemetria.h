@@ -8,11 +8,10 @@
 class LeitorTelemetria
 {
   private:
-    char* IDPlaca;
     bool deveMockarSensor;
     int mockaValorDoSensor();
   
   public:
-    LeitorTelemetria(char* IDPlaca, bool deveMockarSensor);
+    LeitorTelemetria(bool deveMockarSensor);
     int obtemLeitura();
 };
