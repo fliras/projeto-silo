@@ -1,14 +1,25 @@
+/*
+* GerenciadorClientIoTHub.h:
+* Header do GerenciadorClientIoTHub, que define as funcionalidades da classe responsável por interagir diretamente com o Azure como um client.
+*/
+
 #ifndef IOT_HUB_CLIENT_H
 #define IOT_HUB_CLIENT_H
 
+
+// Inclusão dos Headers
 #include "src/device/logger-serial/LoggerSerial.h"
 #include "src/azure/iot-hub-token-manager/AzIoTHubTokenManager.h"
 #include <az_core.h>
 #include <az_iot.h>
 
-#define AZURE_SDK_CLIENT_USER_AGENT "c%2F" AZ_SDK_VERSION_STRING "(ard;esp32)"
-#define obtemTamanhoDeArray(a) (sizeof(a) / sizeof(a[0]))
 
+// Constantes utilizadas
+#define AZURE_SDK_CLIENT_USER_AGENT "c%2F" AZ_SDK_VERSION_STRING "(ard;esp32)" // Constante utilizada pela biblioteca externa da Microsoft
+#define obtemTamanhoDeArray(a) (sizeof(a) / sizeof(a[0])) // Método autilizar
+
+
+/// @brief Protótipo do GerenciadorClientIoTHub.
 class GerenciadorClientIoTHub
 {  
   public:
