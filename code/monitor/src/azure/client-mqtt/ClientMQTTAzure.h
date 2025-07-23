@@ -1,11 +1,20 @@
+/*
+* ClientMQTTAzure.h:
+* Header do ClientMQTTAzure, utilizado para gerenciar a comunicação via MQTT entre Esp32 e Azure IoT Hub.
+*/
+
 #ifndef MQTT_CLIENT_H
 #define MQTT_CLIENT_H
 
+
+// Inclusão dos Headers.
 #include <Arduino.h>
 #include <mqtt_client.h>
 #include <az_iot_hub_client.h>
 #include "src/device/logger-serial/LoggerSerial.h"
 
+
+// Constantes utilizadas.
 #define QTDE_BYTES_BUFFER_DE_DADOS_MQTT 128
 #define MQTT_QOS1 1
 #define INTERVALO_KEEP_ALIVE_EM_SEGUNDOS 30
@@ -13,6 +22,8 @@
 #define DEVE_DESATIVAR_AUTO_RECONNECT false
 #define NAO_DEVE_RETER_MENSAGEM 0
 
+
+/// @brief Protótipo do ClientMQTTAzure
 class ClientMQTTAzure
 {
   private:
