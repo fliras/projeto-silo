@@ -29,7 +29,7 @@
 #define CFG_INTERVALO_ENVIO_MSG_EM_MILISSEGS 1000 * 60 * 2
 
 // Indica se o Esp32 deve mockar a leitura do sensor (1) ou obter o valor analógico real (0)
-#define CFG_DEVE_MOCKAR_VALOR_DO_LDR 0
+#define CFG_DEVE_MOCKAR_VALOR_DO_SENSOR 0
 
 // Indica se o Esp32 deve mandar as medições ao IoT Hub (1) ou não (0)
 #define CFG_DEVE_ENVIAR_MSG 1
