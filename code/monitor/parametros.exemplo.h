@@ -2,7 +2,6 @@
 // indicados para que o dispositivo possa operar corretamente.
 
 // Configurações do IoT Hub
-
 // Dados de autenticação do Esp32 disponibilizados após o registro do dispositivo IoT no Azure
 #define CFG_IOTHUB_DEVICE_ID "<preencha-aqui>"
 #define CFG_IOTHUB_DEVICE_KEY "<preencha-aqui>"
@@ -13,20 +12,14 @@
 
 // Wi-Fi
 
-// Indica se o Esp32 permitirá escolher a rede Wi-Fi com a qual irá se conectar em tempo de execução (1)
-// ou se irá conectar em uma rede Wi-Fi fixa (0) 
-#define CFG_UTILIZAR_CONEXAO_DINAMICA 1
-
-// SSID e senha do AccessPoint que o Esp32 abrirá para que o usuário se conecte e escolha a rede Wi-Fi
-// com a qual a placa deverá se conectar, caso CFG_UTILIZAR_CONEXAO_DINAMICA = 1.
-// OBS: Uma vez conectado na rede especificada, o Esp32 irá conectar automaticamente a cada inicialização,
-// só reabrindo o AP para escolher uma nova rede Wi-Fi caso não consiga conectar na especificada anteriormente.
+// SSID do AccessPoint que o Esp32 abrirá para que o usuário se conecte e escolha a rede Wi-Fi com a qual a placa deverá se conectar.
 #define CFG_WIFI_SSID_AP CFG_IOTHUB_DEVICE_ID
+
+// Senha do AccessPoint que o Esp32 abrirá para que o usuário se conecte e escolha a rede Wi-Fi com a qual a placa deverá se conectar.
 #define CFG_WIFI_SENHA_AP "12345678"
 
-// SSID e Senha da rede Wi-Fi com a qual o Esp32 sempre deverá se conectar, caso CFG_UTILIZAR_CONEXAO_DINAMICA = 0
-#define CFG_WIFI_SSID_FIXO ""
-#define CFG_WIFI_SENHA_FIXA ""
+// OBS: Uma vez conectado na rede especificada, o Esp32 irá conectar automaticamente a cada inicialização,
+// só reabrindo o AP para escolher uma nova rede Wi-Fi caso não consiga conectar na especificada anteriormente.
 
 /*********************************************************************/
 
