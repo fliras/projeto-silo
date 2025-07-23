@@ -1,14 +1,25 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// SPDX-License-Identifier: MIT
+/*
+* AzIoTHubTokenManager.h:
+* Header do AzIoTHubTokenManager, utilizado para gerenciar os tokens criados
+* para autenticar o Esp32 junto ao Azure IoT Hub.
+*
+* OBS: A maior parte deste código é externo, disponibilizado pela Microsoft.
+* O código original está disponível no repositório oficial:
+* https://github.com/Azure/azure-sdk-for-c-arduino/tree/main/examples/Azure_IoT_Hub_ESP32
+*/
 
 #ifndef AZIOTSASTOKEN_H
 #define AZIOTSASTOKEN_H
 
+
+// Inclusão dos headers
 #include <Arduino.h>
 #include <az_iot_hub_client.h>
 #include <az_span.h>
 #include "parametros.h"
 
+
+/// @brief Protótipo do AzIoTHubTokenManager que deve criar e gerenciar tokens utilizados no Azure IoT Hub
 class AzIoTHubTokenManager
 {
 public:

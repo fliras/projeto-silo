@@ -1,6 +1,14 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// SPDX-License-Identifier: MIT
+/*
+* AzIoTHubTokenManager.cpp:
+* Implementações das funcionalidades definidas em AzIoTHubTokenManager.h.
+*
+* OBS: A maior parte deste código é externo, disponibilizado pela Microsoft.
+* Os trechos de código customizado estão comentados abaixo.
+* O código original está disponível no repositório oficial:
+* https://github.com/Azure/azure-sdk-for-c-arduino/tree/main/examples/Azure_IoT_Hub_ESP32
+*/
 
+// Inclusão dos headers
 #include "AzIoTHubTokenManager.h"
 #include "src/device/logger-serial/LoggerSerial.h"
 #include <az_result.h>
@@ -227,6 +235,9 @@ az_span generate_sas_token(
   }
 }
 
+
+/// @brief Implementação do Construtor, que inicializa os atributos da classe.
+/// @param client Instância de um componente externo da Microsoft, utilizado na geração do token 
 AzIoTHubTokenManager::AzIoTHubTokenManager(az_iot_hub_client* client)
 {
   this->client = client;
@@ -237,6 +248,10 @@ AzIoTHubTokenManager::AzIoTHubTokenManager(az_iot_hub_client* client)
   this->sasToken = AZ_SPAN_EMPTY;
 }
 
+
+/// @brief Implementação do método que gera tokens no IoT Hub.
+/// @param expiryTimeInMinutes Tempo de expiração do token em minutos
+/// @return 1, caso haja falha na criação do token e 0, em caso de sucesso.
 int AzIoTHubTokenManager::geraToken(unsigned int expiryTimeInMinutes)
 {
   this->sasToken = generate_sas_token(
@@ -268,6 +283,9 @@ int AzIoTHubTokenManager::geraToken(unsigned int expiryTimeInMinutes)
   }
 }
 
+
+/// @brief Implementação do método que verifica se o token expirou.
+/// @return true, se o token expirou e false, caso ainda não tenha expirado.
 bool AzIoTHubTokenManager::tokenExpirou()
 {
   time_t now = time(NULL);
@@ -283,11 +301,17 @@ bool AzIoTHubTokenManager::tokenExpirou()
   }
 }
 
+
+/// @brief Implementação do método que verifica se já há um token criado no gerenciador.
+/// @return true, se o token já foi criado e false, caso não esteja criado.
 bool AzIoTHubTokenManager::tokenFoiCriado()
 {
   return !az_span_is_content_equal(this->sasToken, AZ_SPAN_EMPTY);
 }
 
+
+/// @brief Implementação do método que retorna o token criado pelo gerenciador.
+/// @return token criado
 const char* AzIoTHubTokenManager::obtemToken()
 {
   return (const char*)az_span_ptr(this->sasToken);
