@@ -38,5 +38,6 @@
 // Ex: com um valor 15, o Esp32 irá enviar 14 mensagens de Ping e, somente no 15º envio, as medições serão
 // extraídas e enviadas ao IoTHub, reiniciando a contagem. Associado a um intervalo de envio de 2 minutos
 // entre cada mensagem, o silo associado a este Esp32 teria um registro de medição a cada 30 minutos
-// (15 mensagens x 2 minutos). 
+// (15 mensagens x 2 minutos). Essa proporção foi utilizada uma vez que a function entra em cooldown quando não recebe
+// mensagens constantemente. Recomendamos não modificar a proporção 15 mensagens X 2 minutos, sob o risco de perda de mensagens.
 #define CFG_MULTIPLO_DE_ENVIO_DE_TELEMETRIA 15
