@@ -1,3 +1,5 @@
+/* View que exibe de maneira formatada os registros de medição dos silos */
+
 CREATE VIEW `vw_medicoes` AS
 select `s`.`id_silo`,
        `ms`.`timestamp_medicao`,

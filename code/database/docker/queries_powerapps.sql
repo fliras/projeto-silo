@@ -1,3 +1,5 @@
+/* Queries que podem ser úteis na consulta de medições. */
+
 /* obtém a última medição de um silo de id X */
 select * from vw_medicoes
 	where id_silo = X
